@@ -11,7 +11,9 @@ struct Control {
 
 fn main() -> Result<()> {
     let args = Control::from_args();
-    let tmp = std::env::var("TMPDIR").unwrap_or("/tmp".to_owned());
+    let tmp = std::env::var("TMPDIR").unwrap_or(unsafe {
+        icrate::Foundation::NSTemporaryDirectory().as_ref().to_string()
+    });
 
     match std::fs::read_dir(tmp) {
         Ok(dir) => dir
